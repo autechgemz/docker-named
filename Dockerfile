@@ -4,7 +4,7 @@ LABEL maintainer "Kenji Tsumaki <autechgemz@gmail.com>"
 
 RUN apk upgrade --update --available \
  && apk add --no-cache \
-    runit \
+    tini \
     tzdata \
     rsyslog \
     bind \
@@ -17,11 +17,12 @@ RUN apk upgrade --update --available \
 COPY etc/bind /etc/bind
 COPY etc/rsyslog.conf /etc/rsyslog.conf
 
-COPY service /service
-RUN chmod 755 /service/*/run
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
 
 EXPOSE 53/udp 53/tcp
 
 VOLUME ["/etc/bind"]
 
-ENTRYPOINT ["runsvdir", "-P", "/service/"]
+ENTRYPOINT ["tini", "--"]
+CMD ["/entrypoint.sh"]

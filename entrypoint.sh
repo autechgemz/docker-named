@@ -15,10 +15,11 @@ if [ ! -f $BIND_HINT ]; then
   wget -q -O $BIND_HINT https://www.internic.net/domain/named.root
 fi
 
-find ${BIND_ROOT} -type d -exec chmod 0750 {} \;
-find ${BIND_ROOT} -type f -exec chmod 0640 {} \;
+find ${BIND_ROOT} -type d -exec chmod 0755 {} \;
+find ${BIND_ROOT} -type f -exec chmod 0644 {} \;
 
-find ${BIND_ROOT} -type d -exec chown root.named {} \;
-find ${BIND_ROOT} -type f -exec chown root.named {} \;
+find ${BIND_ROOT} -type d -exec chown named.named {} \;
+find ${BIND_ROOT} -type f -exec chown named.named {} \;
 
+/usr/sbin/rsyslogd &&
 exec /usr/sbin/named -u named -f
