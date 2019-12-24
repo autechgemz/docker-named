@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 set -e
 
+if [ ! -z ${TZ} ]; then
+  ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
+else
+  ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+fi
+
 BIND_ROOT=/etc/bind
 BIND_DATA=/var/bind
 

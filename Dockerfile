@@ -1,7 +1,5 @@
 FROM alpine:latest
 MAINTAINER autechgemz@gmail.com
-ENV TZ Asia/Tokyo
-ARG TIMEZONE=${TZ}
 RUN apk upgrade --update --available \
  && apk add --no-cache \
     tini \
@@ -10,11 +8,7 @@ RUN apk upgrade --update --available \
     bind \
     bind-libs \
     bind-tools \
-    wget \
-    ca-certificates \
- && update-ca-certificates \
- && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
- && apk del tzdata
+ && rm -f /var/cache/apk/*
 COPY etc/bind /etc/bind
 COPY var/bind /var/bind
 COPY etc/rsyslog.conf /etc/rsyslog.conf
