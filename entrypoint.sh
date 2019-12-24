@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 BIND_ROOT=/etc/bind
 BIND_DATA=/var/bind
