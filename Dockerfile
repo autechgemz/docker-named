@@ -13,9 +13,9 @@ RUN apk upgrade --update --available \
     wget \
     ca-certificates \
  && update-ca-certificates \
- && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
- && apk del tzdata
+ && rm -f /var/cache/apk/*
 COPY etc/bind /etc/bind
+COPY var/bind /var/bind
 COPY etc/rsyslog.conf /etc/rsyslog.conf
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
