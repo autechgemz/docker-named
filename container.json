@@ -6,7 +6,7 @@
     "named_user": "named",
     "named_confdir": "/etc/named",
     "named_datadir": "/var/named",
-    "named_version": "9.16.4"
+    "named_version": "9.16.5"
   },
   "builders":[
     {
@@ -16,6 +16,8 @@
       "commit": true,
       "changes": [
         "ENV TZ {{user `timezone`}}",
+        "ENV PATH {{user `named_root`}}\/sbin:{{user `named_root`}}\/bin:$PATH",
+        "ENV GOPATH {{user `named_root`}}",
         "VOLUME {{user `named_root`}}\/{{user `named_confdir`}}",
         "VOLUME {{user `named_root`}}\/{{user `named_datadir`}}",
         "EXPOSE 53\/tcp 53\/udp",
@@ -62,7 +64,7 @@
   "post-processors": [
     {
       "type": "docker-tag",
-      "repository": "autechgemz/docker-named",
+      "repository": "autechgemz/named",
       "tags": "latest"
     }
   ]

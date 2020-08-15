@@ -1,7 +1,9 @@
 version: "3"
 services:
   named:
-    image: autechgemz/docker-named
+    image: autechgemz/named
     container_name: named
     network_mode: bridge
     restart: always
+    environment:
+      - DNSTAP_RUN=false

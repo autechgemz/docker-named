@@ -19,6 +19,7 @@
       apk:
         name:
           - runit
+          - su-exec
         state: installed
     - name: install build-dependencies
       apk:
@@ -30,10 +31,14 @@
           - libtool
           - git
           - tar
+          - go
         state: installed
     - name: install library-dependencies
       apk:
         name:
+          - libevent-dev
+          - fstrm-dev
+          - protobuf-c-dev
           - openssl-dev
           - expat-dev
           - libxml2-dev
@@ -90,10 +95,18 @@
         --enable-static \
         --with-libtool \
         --with-randomdev=/dev/random \
+        --enable-dnstap \
         && make \
         && make install
       args:
         chdir: "{{ named_root }}/bind-{{ named_version }}/"
+    - name: build golang-dnstap
+      shell: |
+        go get -u -v github.com/dnstap/golang-dnstap
+        go get -u -v github.com/dnstap/golang-dnstap/dnstap
+        go get -u -v github.com/farsightsec/golang-framestream
+      environment:
+        GOPATH: "{{ named_root }}"
     - name: remove source files
       file:
         path: "{{ item }}"
@@ -102,6 +115,8 @@
       with_items:
         - "{{ named_root }}/bind-{{ named_version }}"
         - "{{ named_root }}/bind-{{ named_version }}.tar.xz"
+        - "{{ named_root }}/src"
+        - "{{ named_root }}/pkg"
     - name: remove build-dependencies package
       apk:
         name:
@@ -111,6 +126,7 @@
           - libtool
           - git
           - tar
+          - go
         state: absent
   - name: setup named
     block:
