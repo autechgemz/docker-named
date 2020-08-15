@@ -1,17 +1,7 @@
 version: "3"
 services:
   named:
-    build: .
-    image: autechgemz/named
+    image: autechgemz/docker-named
+    container_name: named
     network_mode: bridge
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-    environment:
-      TZ: "Asia/Tokyo"
     restart: always
-    healthcheck:
-      test: ["CMD","dig","@localhost","localhost","+norec"]
-      interval: 5m
-      timeout: 10s
-      retries: 3
