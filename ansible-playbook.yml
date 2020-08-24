@@ -32,6 +32,7 @@
           - git
           - tar
           - go
+          - unzip
         state: installed
     - name: install library-dependencies
       apk:
